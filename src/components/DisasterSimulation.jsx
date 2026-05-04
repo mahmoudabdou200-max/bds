@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
-import BuildingUltimate from './BuildingUltimate';
+import BuildingCanvas from './BuildingCanvas';
 import DisasterOverlay from './DisasterOverlay';
 import DamageOverlay from './DamageOverlay';
 import StickFigureScene from './StickFigureScene';
@@ -21,7 +21,6 @@ export default function DisasterSimulation({
     [disasterType, factorScores, overallScore]
   );
 
-  // Enable cinematic mode during simulation (phases 1-3)
   useEffect(() => {
     if (simPhase >= 1 && simPhase < 4) {
       const timer = setTimeout(() => setCinematicMode(true), 300);
@@ -34,7 +33,6 @@ export default function DisasterSimulation({
     }
   }, [simPhase]);
 
-  // Slow motion during critical moments
   useEffect(() => {
     if (simPhase === 2 && damageParams.damageIntensity > 0.6) {
       setSlowMotion(true);
@@ -43,7 +41,6 @@ export default function DisasterSimulation({
     }
   }, [simPhase, damageParams.damageIntensity]);
 
-  // Reset shake complete when phase changes
   useEffect(() => {
     if (simPhase !== prevPhase.current) {
       setShakeComplete(false);
@@ -81,7 +78,7 @@ export default function DisasterSimulation({
         }} />
 
         <div className="sim-building-area-inner">
-          <BuildingUltimate
+          <BuildingCanvas
             wallId={wallId}
             roofId={roofId}
             foundationId={foundationId}
@@ -90,8 +87,6 @@ export default function DisasterSimulation({
             countryId={countryId}
             size="large"
             damageClass={simPhase >= 1 ? damageParams.damage : null}
-            disasterType={disasterType}
-            simPhase={simPhase}
           />
 
           <DisasterOverlay
