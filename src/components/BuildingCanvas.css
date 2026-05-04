@@ -1,0 +1,118 @@
+.building-canvas {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  background: linear-gradient(135deg, #E3F2FD, #BBDEFB);
+  border-radius: 16px;
+  border: 2px solid #90CAF9;
+  position: relative;
+  overflow: hidden;
+}
+
+.building-canvas-large {
+  min-height: 360px;
+}
+
+.building-canvas-medium {
+  min-height: 260px;
+}
+
+.building-canvas-small {
+  min-height: 180px;
+}
+
+.building-svg {
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+}
+
+.sky-bg {
+  animation: skyPulse 8s ease-in-out infinite;
+}
+
+@keyframes skyPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.95; }
+}
+
+.sun-glow {
+  animation: sunGlow 4s ease-in-out infinite;
+}
+
+@keyframes sunGlow {
+  0%, 100% { r: 25; opacity: 0.9; }
+  50% { r: 28; opacity: 1; }
+}
+
+.cloud-1 {
+  animation: cloudDrift1 20s linear infinite;
+}
+
+.cloud-2 {
+  animation: cloudDrift2 25s linear infinite;
+}
+
+@keyframes cloudDrift1 {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(30px); }
+}
+
+@keyframes cloudDrift2 {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-20px); }
+}
+
+.solar-panel {
+  animation: solarGlint 3s ease-in-out infinite;
+}
+
+@keyframes solarGlint {
+  0%, 100% { opacity: 0.95; }
+  50% { opacity: 1; filter: brightness(1.1); }
+}
+
+.shading-awning {
+  animation: awningShade 2s ease-in-out infinite alternate;
+}
+
+@keyframes awningShade {
+  0% { filter: brightness(0.95); }
+  100% { filter: brightness(1.05); }
+}
+
+.vent-arrows {
+  animation: ventPulse 2s ease-in-out infinite;
+}
+
+@keyframes ventPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 0.9; }
+}
+
+.heat-waves {
+  animation: heatWaveAnim 2s ease-in-out infinite;
+}
+
+@keyframes heatWaveAnim {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+.quake-effects {
+  animation: quakeShake 0.15s ease-in-out infinite;
+}
+
+@keyframes quakeShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(2px); }
+  75% { transform: translateX(-2px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sky-bg, .sun-glow, .cloud-1, .cloud-2,
+  .solar-panel, .shading-awning, .vent-arrows,
+  .heat-waves, .quake-effects, .rain-effects,
+  .canada-effects, .saudi-effects, .flood-effects {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,288 @@
+.design-workshop {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.workshop-header {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
+}
+
+.workshop-header select {
+  flex: 1;
+  min-width: 150px;
+  padding: 12px 16px;
+  border: 2px solid #E0E0E0;
+  border-radius: 10px;
+  font-size: 1rem;
+  background: white;
+}
+
+.workshop-header select:focus {
+  border-color: #1976D2;
+  outline: none;
+}
+
+.workshop-main {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 16px;
+}
+
+.workshop-canvas-area {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.workshop-canvas-area .building-canvas {
+  background: linear-gradient(180deg, #E3F2FD, #90CAF9);
+  border: 3px solid #1976D2;
+  border-radius: 16px;
+  min-height: 400px;
+}
+
+.material-chips {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+}
+
+.chip {
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-weight: 600;
+  border: 2px solid transparent;
+  background: #F5F5F5;
+  color: #78909C;
+  cursor: pointer;
+}
+
+.chip.active {
+  background: #E3F2FD;
+  color: #1976D2;
+  border-color: #1976D2;
+}
+
+.budget-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.budget-bar {
+  height: 12px;
+  background: #E0E0E0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.budget-fill {
+  height: 100%;
+  border-radius: 6px;
+}
+
+.remaining {
+  color: #4CAF50;
+  font-size: 0.9rem;
+}
+
+.workshop-palette {
+  background: white;
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.palette-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  background: #F5F5F5;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.tab {
+  flex: 1;
+  padding: 12px 8px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  font-weight: 700;
+  color: #78909C;
+  cursor: pointer;
+}
+
+.tab.active {
+  background: #1976D2;
+  color: white;
+}
+
+.palette-items {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 600px;
+}
+
+.features-section {
+  margin-bottom: 16px;
+}
+
+.features-info {
+  font-size: 0.85rem;
+  color: #546E7A;
+  margin-bottom: 12px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.feature-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 14px 10px;
+  border: 2px solid #E0E0E0;
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  position: relative;
+}
+
+.feature-card:hover:not(.disabled) {
+  border-color: #1976D2;
+}
+
+.feature-card.selected {
+  background: #E3F2FD;
+  border-color: #1976D2;
+}
+
+.feature-card.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.feat-icon {
+  font-size: 1.8rem;
+}
+
+.feat-name {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #37474F;
+}
+
+.feat-cost {
+  font-size: 0.8rem;
+  color: #1565C0;
+  font-weight: 600;
+}
+
+.check {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 20px;
+  height: 20px;
+  background: #1976D2;
+  color: white;
+  border-radius: 50%;
+  font-size: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.materials-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mat-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  border: 2px solid #E0E0E0;
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+}
+
+.mat-card:hover {
+  border-color: #1976D2;
+}
+
+.mat-card.selected {
+  background: #E3F2FD;
+  border-color: #1976D2;
+}
+
+.mat-icon {
+  font-size: 1.8rem;
+}
+
+.mat-name {
+  flex: 1;
+  font-weight: 700;
+  color: #263238;
+  text-align: left;
+}
+
+.mat-cost {
+  font-weight: 600;
+  color: #1565C0;
+}
+
+.simulate-btn {
+  width: 100%;
+  padding: 18px;
+  background: #1976D2;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.simulate-btn:disabled {
+  background: #B0BEC5;
+  cursor: not-allowed;
+}
+
+.simulate-btn:hover:not(:disabled) {
+  background: #1565C0;
+}
+
+@media (max-width: 900px) {
+  .workshop-main {
+    grid-template-columns: 1fr;
+  }
+  .workshop-canvas-area .building-canvas {
+    min-height: 300px;
+  }
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+}

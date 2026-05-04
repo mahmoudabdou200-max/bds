@@ -1,0 +1,460 @@
+.results-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Disaster Simulation */
+.disaster-simulation {
+  grid-column: 1 / -1;
+  border-radius: 20px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sim-building-area {
+  background: rgba(255,255,255,0.95);
+  border-radius: 16px;
+  padding: 20px;
+  min-height: 420px;
+  position: relative;
+}
+
+.sim-building-area .building-canvas {
+  background: transparent;
+  border: none;
+}
+
+.disaster-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* Earthquake */
+.disaster-earthquake .quake-shake {
+  position: absolute;
+  animation: earthquake 0.15s infinite;
+}
+
+@keyframes earthquake {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-8px, 4px); }
+  50% { transform: translate(8px, -4px); }
+  75% { transform: translate(-6px, -6px); }
+  100% { transform: translate(6px, 6px); }
+}
+
+.disaster-earthquake .cracks {
+  position: absolute;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
+  height: 40%;
+  background: repeating-linear-gradient(90deg, transparent, #5D4037 2px, transparent 4px);
+  animation: crackAppear 1s ease-out;
+}
+
+@keyframes crackAppear {
+  from { opacity: 0; transform: scaleY(0); }
+  to { opacity: 0.6; transform: scaleY(1); }
+}
+
+/* Flood */
+.disaster-flood .flood-water {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 0%;
+  background: linear-gradient(180deg, rgba(33,150,243,0.8), rgba(21,101,192,0.95));
+  animation: floodRise 4s ease-in-out infinite;
+}
+
+@keyframes floodRise {
+  0%, 100% { height: 0%; }
+  25% { height: 70%; }
+  50% { height: 50%; }
+  75% { height: 80%; }
+}
+
+/* Heat Wave */
+.disaster-heat_wave .heat-flames {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60%;
+  background: repeating-linear-gradient(180deg, 
+    transparent 0px, 
+    rgba(255,87,34,0.3) 20px,
+    rgba(255,152,0,0.4) 40px,
+    transparent 60px);
+  animation: heatPulse 0.5s infinite;
+}
+
+@keyframes heatPulse {
+  0%, 100% { opacity: 0.5; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.1); }
+}
+
+/* Sandstorm */
+.disaster-sandstorm .sand-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background-image: 
+    radial-gradient(3px 3px at 10% 20%, #D4A574, transparent),
+    radial-gradient(2px 2px at 30% 40%, #C4A35A, transparent),
+    radial-gradient(4px 4px at 50% 15%, #D4A574, transparent),
+    radial-gradient(2px 2px at 70% 50%, #C4A35A, transparent),
+    radial-gradient(3px 3px at 90% 30%, #D4A574, transparent);
+  animation: sandDrift 0.3s linear infinite;
+}
+
+@keyframes sandDrift {
+  from { background-position: 0 0; }
+  to { background-position: 100px 0; }
+}
+
+/* Blizzard */
+.disaster-blizzard .snow-blizzard {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 30%, white 2px, transparent 3px),
+    radial-gradient(circle at 40% 60%, white 3px, transparent 4px),
+    radial-gradient(circle at 60% 20%, white 2px, transparent 3px),
+    radial-gradient(circle at 80% 50%, white 3px, transparent 4px),
+    radial-gradient(circle at 10% 70%, white 2px, transparent 3px),
+    radial-gradient(circle at 90% 40%, white 2px, transparent 3px);
+  animation: blizzard 0.5s linear infinite;
+}
+
+@keyframes blizzard {
+  from { background-position: 0 0, 0 0, 0 0; }
+  to { background-position: 50px 100px, 30px 80px, 40px 120px; }
+}
+
+/* Typhoon */
+.disaster-typhoon .wind-destroy {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: repeating-linear-gradient(90deg, 
+    transparent 0px, 
+    rgba(96,125,139,0.6) 10px,
+    transparent 20px);
+  animation: typhoon 0.2s linear infinite;
+}
+
+@keyframes typhoon {
+  from { transform: translateX(-50px); }
+  to { transform: translateX(50px); }
+}
+
+/* Bushfire */
+.disaster-bushfire .fire-spread {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: repeating-linear-gradient(0deg,
+    transparent 0px,
+    rgba(255,87,34,0.8) 10px,
+    rgba(255,152,0,0.6) 20px,
+    rgba(183,28,28,0.7) 30px);
+  animation: fireBurn 0.8s ease-in-out infinite;
+}
+
+@keyframes fireBurn {
+  0%, 100% { height: 40%; opacity: 0.9; }
+  50% { height: 60%; opacity: 1; }
+}
+
+/* Tsunami */
+.disaster-tsunami .tsunami-wave {
+  position: absolute;
+  top: 20%;
+  left: -100%;
+  width: 300%;
+  height: 80%;
+  background: linear-gradient(180deg, rgba(21,101,192,0.9), rgba(13,71,161,0.95));
+  clip-path: polygon(0% 60%, 15% 40%, 30% 55%, 45% 35%, 60% 50%, 75% 30%, 90% 45%, 100% 50%, 100% 100%, 0% 100%);
+  animation: tsunamiCrash 3s ease-in-out infinite;
+}
+
+@keyframes tsunamiCrash {
+  0% { left: -100%; }
+  50% { left: 0%; }
+  100% { left: -100%; }
+}
+
+.disaster-message {
+  position: absolute;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.9);
+  color: white;
+  padding: 16px 32px;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.disaster-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 24px;
+  gap: 12px;
+}
+
+.prog-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.prog-step span {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  transition: all 0.3s;
+}
+
+.prog-step.done span {
+  background: #4CAF50;
+}
+
+.prog-step label {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.7);
+  margin-top: 4px;
+}
+
+.prog-step.done label {
+  color: white;
+}
+
+.prog-line {
+  width: 60px;
+  height: 3px;
+  background: rgba(255,255,255,0.3);
+}
+
+.disaster-info {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.disaster-info h3 {
+  color: white;
+  font-size: 1.3rem;
+  margin: 0 0 8px;
+}
+
+.disaster-info p {
+  color: #FFEB3B;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Results View */
+.build-view {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.build-view h3 {
+  margin: 0 0 12px;
+  color: #37474F;
+}
+
+.build-view .building-canvas {
+  background: transparent;
+  border: none;
+}
+
+.build-info {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.build-info span {
+  background: #E3F2FD;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 0.85rem;
+  color: #1565C0;
+}
+
+.score-section {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.score-card {
+  text-align: center;
+  padding: 20px;
+  background: #FAFAFA;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border-top: 4px solid;
+}
+
+.score-big {
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.score-label {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 8px 0 4px;
+}
+
+.score-stars {
+  font-size: 1.5rem;
+  color: #FFC107;
+}
+
+.details-list {
+  margin-bottom: 20px;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #EEE;
+}
+
+.factor-title {
+  margin: 20px 0 12px;
+  color: #37474F;
+}
+
+.factors-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.factor-row {
+  display: grid;
+  grid-template-columns: 140px 1fr 40px;
+  align-items: center;
+  gap: 10px;
+}
+
+.factor-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #37474F;
+}
+
+.factor-bar-box {
+  height: 14px;
+  background: #E0E0E0;
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.factor-bar-fill {
+  height: 100%;
+  border-radius: 7px;
+}
+
+.factor-num {
+  font-weight: 700;
+  text-align: right;
+}
+
+.warnings-box {
+  margin-top: 20px;
+  padding: 12px;
+  background: #FFF3E0;
+  border-radius: 8px;
+}
+
+.warnings-box h4 {
+  margin: 0 0 8px;
+  color: #E65100;
+}
+
+.warn-item {
+  font-size: 0.85rem;
+  color: #37474F;
+  padding: 4px 0;
+}
+
+.btn-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.btn-edit, .btn-save, .btn-new {
+  flex: 1;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 2px solid;
+}
+
+.btn-edit {
+  background: #1976D2;
+  color: white;
+  border-color: #1976D2;
+}
+
+.btn-save {
+  background: white;
+  color: #1976D2;
+  border-color: #1976D2;
+}
+
+.btn-new {
+  background: white;
+  color: #78909C;
+  border-color: #B0BEC5;
+}
+
+@media (max-width: 800px) {
+  .results-page {
+    grid-template-columns: 1fr;
+  }
+}

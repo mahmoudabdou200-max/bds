@@ -1,0 +1,152 @@
+.app-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f5f5f5;
+  font-family: 'Inter', 'Segoe UI', Tahoma, Arial, sans-serif;
+}
+
+.app-header {
+  background: linear-gradient(135deg, #1976D2, #1565C0);
+  color: white;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.app-logo {
+  color: white;
+  text-decoration: none;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.header-nav a {
+  color: rgba(255,255,255,0.9);
+  text-decoration: none;
+  margin-right: 20px;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.header-nav a:hover {
+  color: #FFD54F;
+}
+
+.breadcrumb-bar {
+  background: white;
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  border-bottom: 2px solid #E3F2FD;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+}
+
+.breadcrumb-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  transition: all 0.2s;
+  background: #f0f0f0;
+  color: #666;
+}
+
+.breadcrumb-item.active {
+  background: #1976D2;
+  color: white;
+}
+
+.breadcrumb-item.completed {
+  background: #E8F5E9;
+  color: #388E3C;
+}
+
+.breadcrumb-item.disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.breadcrumb-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.1);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.breadcrumb-item.active .breadcrumb-num {
+  background: rgba(255,255,255,0.3);
+}
+
+.budget-display {
+  margin-right: auto;
+  background: #E3F2FD;
+  color: #1565C0;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.app-main {
+  flex: 1;
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.app-footer {
+  background: #263238;
+  color: rgba(255,255,255,0.6);
+  text-align: center;
+  padding: 16px;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+  .app-header {
+    padding: 10px 16px;
+    flex-wrap: wrap;
+  }
+  .app-logo {
+    font-size: 1.1rem;
+  }
+  .header-nav {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  .header-nav a {
+    margin-right: 0;
+    font-size: 0.8rem;
+  }
+  .breadcrumb-bar {
+    padding: 8px 12px;
+    gap: 4px;
+  }
+  .breadcrumb-label {
+    display: none;
+  }
+  .app-main {
+    padding: 16px;
+  }
+}
