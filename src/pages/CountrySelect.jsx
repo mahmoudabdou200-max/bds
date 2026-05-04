@@ -10,7 +10,6 @@ export default function CountrySelect() {
 
   const handleSelect = (countryId) => {
     dispatch({ type: 'SET_COUNTRY', payload: countryId });
-    navigate('/design/building');
   };
 
   const handleSeasonToggle = (season) => {
@@ -70,13 +69,12 @@ export default function CountrySelect() {
         })}
       </div>
 
-      {state.design.countryId && (
-        <div className="action-bar">
-          <button className="next-btn" onClick={() => navigate('/design/building')}>
+      <div className="action-bar">
+          <button className="next-btn" onClick={() => navigate('/design/building')} disabled={!state.design.countryId}>
             Next: Building Type →
           </button>
+          {!state.design.countryId && <p className="required-hint">⚠️ Please select a country to continue</p>}
         </div>
-      )}
     </div>
   );
 }

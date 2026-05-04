@@ -8,12 +8,21 @@
     "build": "vite build && node fix-html.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
-    "serve:dist": "npx serve dist -s"
+    "serve:dist": "npx serve dist -s",
+    "build:html": "vite build && node fix-html.mjs && node exe/build-html.mjs",
+    "build:exe": "npm run build && node exe/build.mjs",
+    "build:all": "npm run build && node exe/build-html.mjs && node exe/build-all.mjs"
   },
   "dependencies": {
+    "glslify": "^7.1.1",
+    "lottie-web": "^5.13.0",
+    "motion": "^12.38.0",
+    "p5": "^2.2.3",
+    "pixi.js": "^8.18.1",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "react-router-dom": "^7.14.2"
+    "react-router-dom": "^7.14.2",
+    "remotion": "^3.3.77"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

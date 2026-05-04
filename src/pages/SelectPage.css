@@ -66,9 +66,50 @@
   padding: 24px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.08);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   border: 3px solid transparent;
+  overflow: hidden;
+}
+
+.select-card::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(25, 118, 210, 0.15);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s, height 0.4s;
+}
+
+.select-card:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+.select-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.select-card.selected {
+  border-color: #1976D2;
+  background: #E3F2FD;
+  animation: selectedPop 0.3s ease-out;
+}
+
+@keyframes selectedPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.02); }
+  100% { transform: scale(1); }
+}
+
+.select-card:active {
+  transform: translateY(-2px) scale(0.98);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
 }
 
 .select-card:hover {
@@ -169,6 +210,12 @@
   border-radius: 8px;
   font-size: 0.85rem;
   font-weight: 600;
+  animation: badgeSlide 0.4s ease-out;
+}
+
+@keyframes badgeSlide {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
 
 .action-bar {
@@ -187,13 +234,58 @@
   font-size: 1.1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: inherit;
+  position: relative;
+  overflow: hidden;
+}
+
+.next-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  transform: translate(-50%, -50%);
+  transition: width 0.4s, height 0.4s;
+}
+
+.next-btn:active::after {
+  width: 400px;
+  height: 400px;
 }
 
 .next-btn:hover {
   background: #1565C0;
   transform: translateY(-1px);
+}
+
+.next-btn:disabled {
+  background: #B0BEC5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.next-btn:disabled:hover {
+  background: #B0BEC5;
+  transform: none;
+}
+
+.required-hint {
+  text-align: center;
+  color: #F44336;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 8px;
+  animation: hintPulse 2s ease-in-out infinite;
+}
+
+@keyframes hintPulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
 }
 
 .material-info {
@@ -243,7 +335,33 @@
   padding: 16px;
   border: 2px solid #E0E0E0;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.feature-card::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(25, 118, 210, 0.1);
+  transform: translate(-50%, -50%);
+  transition: width 0.35s, height 0.35s;
+}
+
+.feature-card:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+.feature-card:hover {
+  border-color: #1976D2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .feature-card:hover {
@@ -253,6 +371,13 @@
 .feature-card.selected {
   border-color: #1976D2;
   background: #E3F2FD;
+  animation: featurePop 0.3s ease-out;
+}
+
+@keyframes featurePop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
 }
 
 .feature-card.conflict {

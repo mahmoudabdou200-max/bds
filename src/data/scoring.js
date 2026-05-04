@@ -58,7 +58,7 @@ export function calculateResults(countryId, buildingTypeId, season, wallId, roof
 
     // Combine: material (0-3) + features (0-2) = 0-5 scale
     let score = Math.min(5, materialBase + Math.max(0, featureBonus));
-    score = (score / 5) * 100;
+    score = (score / 5) * 85; // Max 85 instead of 100 - makes survival harder
 
     // Apply building type difficulty multiplier
     const difficulty = buildingType.difficultyMultipliers?.[factor] || 1;

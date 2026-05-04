@@ -83,6 +83,14 @@ function MaterialSelect({ category, materials, nextPath, title, subtitle }) {
           </button>
         </div>
       )}
+      {!selectedId && (
+        <div className="action-bar">
+          <button className="next-btn" disabled>
+            Next →
+          </button>
+          <p className="required-hint">⚠️ Please select a material to continue</p>
+        </div>
+      )}
     </div>
   );
 }

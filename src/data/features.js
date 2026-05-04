@@ -1,13 +1,12 @@
 import { Factor } from './constants';
 
 export const features = [
-  {
+{
     id: 'feat_small_windows',
     category: 'windows',
     nameEn: 'Small Windows',
-    nameAr: 'Small Windows',
-    icon: '🔲',
-    description: '+Heat +sandstorms, -natural lighting',
+        icon: '🔲',
+    description: '+Heat +sandstorms, -natural lighting. Mix with Large Windows for varied light.',
     cost: 5000,
     effects: {
       [Factor.HEAT]: 1,
@@ -17,8 +16,8 @@ export const features = [
       [Factor.WATER]: 0,
       [Factor.SUSTAINABILITY]: 0,
     },
-    conflicts: ['feat_large_windows'],
-    synergies: [{ with: 'feat_thermal_insulation', factor: Factor.HEAT, bonus: 5 }, { with: 'feat_thermal_insulation', factor: Factor.COLD_SNOW, bonus: 5 }],
+    conflicts: [],
+    synergies: [{ with: 'feat_thermal_insulation', factor: Factor.HEAT, bonus: 5 }, { with: 'feat_thermal_insulation', factor: Factor.COLD_SNOW, bonus: 5 }, { with: 'feat_large_windows', factor: Factor.SUSTAINABILITY, bonus: 3 }],
     diminishes: [{ with: 'feat_cross_ventilation', factor: Factor.HEAT, reduction: 0.5 }],
     prerequisites: [],
   },
@@ -26,9 +25,8 @@ export const features = [
     id: 'feat_large_windows',
     category: 'windows',
     nameEn: 'Large Windows',
-    nameAr: 'Large Windows',
-    icon: '🪟',
-    description: '-Heat -wind, +natural lighting',
+        icon: '🪟',
+    description: '-Heat -wind, +natural lighting. Mix with Small Windows for balanced design.',
     cost: 8000,
     effects: {
       [Factor.HEAT]: -1,
@@ -38,17 +36,16 @@ export const features = [
       [Factor.WATER]: 0,
       [Factor.SUSTAINABILITY]: 0,
     },
-    conflicts: ['feat_small_windows'],
-    synergies: [{ with: 'feat_cross_ventilation', factor: Factor.HEAT, bonus: 5 }],
+    conflicts: [],
+    synergies: [{ with: 'feat_cross_ventilation', factor: Factor.HEAT, bonus: 5 }, { with: 'feat_small_windows', factor: Factor.SUSTAINABILITY, bonus: 3 }],
     diminishes: [{ with: 'feat_thermal_insulation', factor: Factor.HEAT, reduction: 0.25 }],
-    prerequisites: [],
+prerequisites: [],
   },
   {
     id: 'feat_thermal_insulation',
     category: 'insulation',
     nameEn: 'Thermal Insulation',
-    nameAr: 'Thermal Insulation',
-    icon: '🧥',
+        icon: '🧥',
     description: '+Heat +cold, best for harsh climates',
     cost: 15000,
     effects: {
@@ -68,8 +65,7 @@ export const features = [
     id: 'feat_shading',
     category: 'shading',
     nameEn: 'Shading Panels',
-    nameAr: 'Shading Panels',
-    icon: '⛱️',
+        icon: '⛱️',
     description: '+Excellent heat resistance',
     cost: 10000,
     effects: {
@@ -89,8 +85,7 @@ export const features = [
     id: 'feat_solar_panels',
     category: 'energy',
     nameEn: 'Solar Panels',
-    nameAr: 'Solar Panels',
-    icon: '🔋',
+        icon: '🔋',
     description: '+Excellent sustainability, needs sloped roof',
     cost: 20000,
     effects: {
@@ -110,8 +105,7 @@ export const features = [
     id: 'feat_rainwater',
     category: 'water',
     nameEn: 'Rainwater Collection Tank',
-    nameAr: 'Rainwater Collection Tank',
-    icon: '💧',
+        icon: '💧',
     description: '+Water protection +sustainability',
     cost: 12000,
     effects: {
@@ -131,8 +125,7 @@ export const features = [
     id: 'feat_cross_ventilation',
     category: 'ventilation',
     nameEn: 'Cross Ventilation',
-    nameAr: 'Cross Ventilation',
-    icon: '💨',
+        icon: '💨',
     description: '+Heat +comfort, less effective with small windows',
     cost: 8000,
     effects: {
@@ -152,8 +145,7 @@ export const features = [
     id: 'feat_reinforcement',
     category: 'structural',
     nameEn: 'Reinforcement Struts',
-    nameAr: 'Reinforcement Struts',
-    icon: '🔩',
+        icon: '🔩',
     description: '+Earthquakes +wind, most important addition',
     cost: 18000,
     effects: {

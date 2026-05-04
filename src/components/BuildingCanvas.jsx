@@ -1,6 +1,10 @@
+import { memo } from 'react';
 import './BuildingCanvas.css';
 
-const SVGW = 500, SVGH = 600, GROUND = 480;
+export const SVGW = 500, SVGH = 600, GROUND = 480;
+export const WL_CONST = 100, WR_CONST = 400;
+export const WW_CONST = WR_CONST - WL_CONST;
+export const MX_CONST = (WL_CONST + WR_CONST) / 2;
 
 const wallStyles = {
   wall_concrete: { fill1: '#B0BEC5', fill2: '#90A4AE', line: '#78909C', pattern: 'blocks', label: 'Concrete' },
@@ -32,7 +36,7 @@ const buildingShapes = {
   office_building: { floors: 4, wallH: 400, roofExtra: 25, doorW: 55, doorH: 80, winRows: 5, winCols: 5 },
 };
 
-export default function BuildingCanvas({ wallId, roofId, foundationId, featureIds, countryId, buildingTypeId, size = 'large' }) {
+const BuildingCanvasInner = memo(function BuildingCanvas({ wallId, roofId, foundationId, featureIds, countryId, buildingTypeId, size = 'large', damageClass }) {
   const ws = wallStyles[wallId] || wallStyles.wall_concrete;
   const rs = roofStyles[roofId] || roofStyles.roof_metal;
   const fs = foundStyles[foundationId] || foundStyles.found_standard;
@@ -42,6 +46,7 @@ export default function BuildingCanvas({ wallId, roofId, foundationId, featureId
 
   const hasSmallWin = featureIds?.includes('feat_small_windows');
   const hasLargeWin = featureIds?.includes('feat_large_windows');
+  const hasMixedWin = hasSmallWin && hasLargeWin;
   const hasInsulation = featureIds?.includes('feat_thermal_insulation');
   const hasShading = featureIds?.includes('feat_shading');
   const hasSolar = featureIds?.includes('feat_solar_panels');
@@ -61,13 +66,20 @@ export default function BuildingCanvas({ wallId, roofId, foundationId, featureId
   const FND_H = fs.type === 'deep' ? 50 * s : fs.type === 'elevated' ? 35 * s : 22 * s;
   const ROOF_H = bs.roofExtra * s;
 
-  const winW = hasSmallWin ? 22 * s : hasLargeWin ? 50 * s : 34 * s;
-  const winH = hasSmallWin ? 26 * s : hasLargeWin ? 56 * s : 40 * s;
-  const winGapX = WW / (bs.winCols + 1);
-  const winGapY = bs.wallH > 250 ? (WT - 80 * s) / (bs.winRows + 1) : WT / (bs.winRows + 1);
+  const getWindowSize = (row, col) => {
+    if (hasMixedWin) {
+      const isLarge = (row + col) % 2 === 0;
+      return isLarge
+        ? { w: 50 * s, h: 56 * s }
+        : { w: 22 * s, h: 26 * s };
+    }
+    if (hasSmallWin) return { w: 22 * s, h: 26 * s };
+    if (hasLargeWin) return { w: 50 * s, h: 56 * s };
+    return { w: 34 * s, h: 40 * s };
+  };
 
   return (
-    <div className={`building-canvas building-canvas-${size}`}>
+    <div className={`building-canvas building-canvas-${size}${damageClass ? ` shake-${damageClass}` : ''}`}>
       <svg viewBox={`0 0 ${W} ${H + 60 * s}`} className="building-svg" style={{ width: '100%', maxWidth: W }}>
         <defs>
           <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
@@ -327,6 +339,11 @@ export default function BuildingCanvas({ wallId, roofId, foundationId, featureId
         {/* ===== WINDOWS ===== */}
         {Array.from({ length: bs.winRows }).map((_, row) =>
           Array.from({ length: bs.winCols }).map((_, col) => {
+            const winSize = getWindowSize(row, col);
+            const winW = winSize.w;
+            const winH = winSize.h;
+            const winGapX = WW / (bs.winCols + 1);
+            const winGapY = bs.wallH > 250 ? (WT - 80 * s) / (bs.winRows + 1) : WT / (bs.winRows + 1);
             const wx = WL + winGapX * (col + 1) - winW / 2 + (row % 2 === 1 ? winGapX * 0.2 : 0);
             const wy = WT_TOP + winGapY * (row + 1) - winH / 2 + 15 * s;
             if (wy + winH > G - 75 * s) return null;
@@ -337,9 +354,7 @@ export default function BuildingCanvas({ wallId, roofId, foundationId, featureId
                 </rect>
                 <line x1={wx + winW / 2} y1={wy} x2={wx + winW / 2} y2={wy + winH} stroke="#546E7A" strokeWidth={0.8 * s} />
                 <line x1={wx} y1={wy + winH / 2} x2={wx + winW} y2={wy + winH / 2} stroke="#546E7A" strokeWidth={0.8 * s} />
-                {/* Window glow */}
                 <rect x={wx + 2 * s} y={wy + 2 * s} width={winW - 4 * s} height={winH / 2 - 2 * s} fill="#FFF9C4" opacity="0.15" rx={1 * s} />
-                {/* Shading */}
                 {hasShading && (
                   <rect x={wx - 4 * s} y={wy - 10 * s} width={winW + 8 * s} height={8 * s} fill="#FF8F00" stroke="#E65100" strokeWidth={0.8 * s} rx={2 * s} opacity="0.85">
                     <animate attributeName="opacity" values="0.7;0.9;0.7" dur="4s" repeatCount="indefinite" />
@@ -475,4 +490,6 @@ export default function BuildingCanvas({ wallId, roofId, foundationId, featureId
       </svg>
     </div>
   );
-}
+});
+
+export default BuildingCanvasInner;

@@ -1,13 +1,13 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import { countries, getDisasterTypeForCountry } from '../data/countries';
 import { buildingTypes } from '../data/buildingTypes';
 import { wallMaterials, roofMaterials, foundationMaterials } from '../data/materials';
-import { features } from '../data/features';
 import { getRating, FactorLabels, Factor } from '../data/constants';
-import { calculateResults, generateComments } from '../data/scoring';
+import { calculateResults } from '../data/scoring';
 import { badges } from '../data/badges';
+import DisasterSimulation from '../components/DisasterSimulation';
 import BuildingCanvas from '../components/BuildingCanvas';
 import './Results.css';
 
@@ -15,35 +15,98 @@ export default function Results() {
   const { state, dispatch } = useApp();
   const navigate = useNavigate();
   const d = state.design;
-  const [results, setResults] = useState(null);
   const [simPhase, setSimPhase] = useState(0);
   const [saved, setSaved] = useState(false);
+  const [phaseProgress, setPhaseProgress] = useState(0);
+  const [displayScore, setDisplayScore] = useState(0);
+  const [revealStep, setRevealStep] = useState(0);
+  const [factorVisible, setFactorVisible] = useState(0);
+  const [confetti, setConfetti] = useState([]);
   const mountedRef = useRef(true);
   const rewardsApplied = useRef(false);
 
+  // Compute results immediately so factor scores are available during simulation
+  const results = useMemo(() => {
+    if (!d.countryId || !d.buildingTypeId || !d.wallId || !d.roofId || !d.foundationId) return null;
+    return calculateResults(
+      d.countryId, d.buildingTypeId, d.season,
+      d.wallId, d.roofId, d.foundationId, d.featureIds
+    );
+  }, [d.countryId, d.buildingTypeId, d.season, d.wallId, d.roofId, d.foundationId, d.featureIds]);
+
+  const country = countries.find(c => c.id === d.countryId);
+  const disasterType = getDisasterTypeForCountry(d.countryId);
+
   useEffect(() => {
     mountedRef.current = true;
-    
+
     if (!d.countryId || !d.buildingTypeId || !d.wallId || !d.roofId || !d.foundationId) {
       navigate('/design', { replace: true });
       return;
     }
 
-    const res = calculateResults(
-      d.countryId, d.buildingTypeId, d.season,
-      d.wallId, d.roofId, d.foundationId, d.featureIds
-    );
-    
-    if (mountedRef.current) setResults(res);
-
     const t1 = setTimeout(() => { if (mountedRef.current) setSimPhase(1); }, 500);
-    const t2 = setTimeout(() => { if (mountedRef.current) setSimPhase(2); }, 2500);
-    const t3 = setTimeout(() => { if (mountedRef.current) setSimPhase(3); }, 5000);
-    const t4 = setTimeout(() => { if (mountedRef.current) setSimPhase(4); }, 7000);
-    
-    return () => { mountedRef.current = false; clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4); };
-  }, [d, navigate]);
+    const tp1 = setInterval(() => { if (mountedRef.current) setPhaseProgress(p => Math.min(p + 2, 100)); }, 30);
+    const t2 = setTimeout(() => { if (mountedRef.current) { setSimPhase(2); clearInterval(tp1); setPhaseProgress(0); } }, 2500);
+    const tp2 = setInterval(() => { if (mountedRef.current) setPhaseProgress(p => Math.min(p + 2, 100)); }, 30);
+    const t3 = setTimeout(() => { if (mountedRef.current) { setSimPhase(3); clearInterval(tp2); setPhaseProgress(0); } }, 5000);
+    const tp3 = setInterval(() => { if (mountedRef.current) setPhaseProgress(p => Math.min(p + 3, 100)); }, 25);
+    const t4 = setTimeout(() => { if (mountedRef.current) { setSimPhase(4); clearInterval(tp3); } }, 7000);
 
+    return () => {
+      mountedRef.current = false;
+      clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); clearTimeout(t4);
+      clearInterval(tp1); clearInterval(tp2); clearInterval(tp3);
+    };
+  }, [d.countryId, d.buildingTypeId, d.wallId, d.roofId, d.foundationId, navigate]);
+
+  // Staggered reveal after simulation ends
+  useEffect(() => {
+    if (simPhase < 4 || !results) return;
+
+    const end = results.overallScore;
+    const dur = 1500;
+    const st = Date.now();
+    const animate = () => {
+      const elapsed = Date.now() - st;
+      const progress = Math.min(elapsed / dur, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setDisplayScore(Math.round(end * eased));
+      if (progress < 1) requestAnimationFrame(animate);
+    };
+    requestAnimationFrame(animate);
+
+    const s1 = setTimeout(() => setRevealStep(1), 400);
+    const s2 = setTimeout(() => setRevealStep(2), 1000);
+    const s3 = setTimeout(() => setRevealStep(3), 1600);
+
+    const factorDelay = 1800;
+    const factors = [Factor.HEAT, Factor.COLD_SNOW, Factor.WIND, Factor.QUAKE, Factor.WATER, Factor.SUSTAINABILITY, Factor.COST];
+    const factorTimers = factors.map((_, i) =>
+      setTimeout(() => setFactorVisible(i + 1), factorDelay + i * 250)
+    );
+
+    if (results.overallScore >= 70) {
+      const count = results.overallScore >= 90 ? 60 : results.overallScore >= 80 ? 40 : 25;
+      const pieces = Array.from({ length: count }).map((_, i) => ({
+        id: i,
+        x: Math.random() * 100,
+        delay: Math.random() * 2,
+        duration: 2 + Math.random() * 2,
+        color: ['#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FF69B4', '#FFEAA7', '#DDA0DD'][i % 8],
+        size: 6 + Math.random() * 8,
+        rotation: Math.random() * 360,
+      }));
+      setTimeout(() => setConfetti(pieces), 300);
+    }
+
+    return () => {
+      clearTimeout(s1); clearTimeout(s2); clearTimeout(s3);
+      factorTimers.forEach(t => clearTimeout(t));
+    };
+  }, [simPhase, results]);
+
+  // Rewards
   useEffect(() => {
     if (simPhase < 4 || !results || rewardsApplied.current) return;
     rewardsApplied.current = true;
@@ -91,157 +154,75 @@ export default function Results() {
     }
 
     const newUnlocked = [...(state.profile.unlockedCountries || ['saudi'])];
-    for (const country of countries) {
-      if (country.unlockRequirement && !newUnlocked.includes(country.id)) {
-        const req = country.unlockRequirement;
+    for (const c of countries) {
+      if (c.unlockRequirement && !newUnlocked.includes(c.id)) {
+        const req = c.unlockRequirement;
         const reqScore = state.profile.bestScores?.[req.country] || 0;
         if (reqScore >= (req.minScore || 40)) {
-          newUnlocked.push(country.id);
+          newUnlocked.push(c.id);
         }
       }
     }
     dispatch({ type: 'SET_PROFILE', payload: { unlockedCountries: newUnlocked } });
   }, [simPhase, results, dispatch, d, state.profile]);
 
+  // ─── SIMULATION PHASE ───
   if (!results || simPhase < 4) {
-    const country = countries.find(c => c.id === d.countryId);
-    const disasterType = getDisasterTypeForCountry(d.countryId);
-    
-    const getDisasterMessage = () => {
-      if (simPhase === 0) return '🧪 Initializing simulation...';
-      if (simPhase === 1) {
-        switch(disasterType) {
-          case 'earthquake': return '🌋 MAJOR EARTHQUAKE! 7.5 MAGNITUDE!';
-          case 'flood': return '🌊 CATASTROPHIC FLOODING!';
-          case 'heat_wave': return '🌡️ EXTREME HEAT WAVE 50°C!';
-          case 'sandstorm': return '🏜️ MASSIVE SANDSTORM!';
-          case 'blizzard': return '❄️ SEVERE BLIZZARD -40°C!';
-          case 'typhoon': return '🌀 SUPER TYPHOON 250km/h!';
-          case 'bushfire': return '🔥 CATASTROPHIC BUSHFIRE!';
-          case 'tsunami': return '🌊 TSUNAMI WARNING 15m WAVES!';
-          default: return '⚠️ SIMULATING DISASTER...';
-        }
-      }
-      if (simPhase === 2) return '💥 Analyzing structural damage...';
-      if (simPhase === 3) return '📊 Calculating resilience...';
-      return '⏳ Please wait...';
-    };
-
-    const getDisasterColor = () => {
-      switch(disasterType) {
-        case 'earthquake': return 'linear-gradient(180deg, #795548, #4E342E)';
-        case 'flood': return 'linear-gradient(180deg, #1565C0, #0D47A1)';
-        case 'heat_wave': return 'linear-gradient(180deg, #FF6F00, #E65100)';
-        case 'sandstorm': return 'linear-gradient(180deg, #D4A574, #A1887F)';
-        case 'blizzard': return 'linear-gradient(180deg, #90CAF9, #42A5F5)';
-        case 'typhoon': return 'linear-gradient(180deg, #607D8B, #37474F)';
-        case 'bushfire': return 'linear-gradient(180deg, #FF5722, #BF360C)';
-        case 'tsunami': return 'linear-gradient(180deg, #0D47A1, #002171)';
-        default: return 'linear-gradient(180deg, #546E7A, #37474F)';
-      }
-    };
-    
     return (
-      <div className="results-page">
-        <div className="disaster-simulation" style={{ background: getDisasterColor() }}>
-          <div className="sim-building-area">
-            <BuildingCanvas
-              wallId={d.wallId}
-              roofId={d.roofId}
-              foundationId={d.foundationId}
-              featureIds={d.featureIds}
-              buildingTypeId={d.buildingTypeId}
-              countryId={d.countryId}
-              size="large"
-            />
-            
-            {/* Disaster Effects Overlay */}
-            {simPhase >= 1 && (
-              <div className={`disaster-overlay disaster-${disasterType}`}>
-                {disasterType === 'earthquake' && (
-                  <>
-                    <div className="quake-shake"></div>
-                    <div className="cracks"></div>
-                  </>
-                )}
-                {disasterType === 'flood' && (
-                  <div className="flood-water"></div>
-                )}
-                {disasterType === 'heat_wave' && (
-                  <div className="heat-flames"></div>
-                )}
-                {disasterType === 'sandstorm' && (
-                  <div className="sand-particles"></div>
-                )}
-                {disasterType === 'blizzard' && (
-                  <div className="snow-blizzard"></div>
-                )}
-                {disasterType === 'typhoon' && (
-                  <div className="wind-destroy"></div>
-                )}
-                {disasterType === 'bushfire' && (
-                  <div className="fire-spread"></div>
-                )}
-                {disasterType === 'tsunami' && (
-                  <div className="tsunami-wave"></div>
-                )}
-              </div>
-            )}
-            
-            <div className="disaster-message">
-              {getDisasterMessage()}
-            </div>
-            
-            <div className="disaster-progress">
-              <div className={`prog-step ${simPhase >= 1 ? 'done' : ''}`}>
-                <span>1</span><label>Disaster</label>
-              </div>
-              <div className="prog-line"></div>
-              <div className={`prog-step ${simPhase >= 2 ? 'done' : ''}`}>
-                <span>2</span><label>Damage</label>
-              </div>
-              <div className="prog-line"></div>
-              <div className={`prog-step ${simPhase >= 3 ? 'done' : ''}`}>
-                <span>3</span><label>Calculate</label>
-              </div>
-              <div className="prog-line"></div>
-              <div className={`prog-step ${simPhase >= 4 ? 'done' : ''}`}>
-                <span>4</span><label>Results</label>
-              </div>
-            </div>
-          </div>
-          
-          <div className="disaster-info">
-            <h3>🌍 {country?.nameEn} - {disasterType.toUpperCase().replace('_', ' ')} SIMULATION</h3>
-            <p>{country?.disasterFacts ? Object.values(country.disasterFacts)[0] : 'Testing building resilience...'}</p>
-          </div>
-        </div>
-      </div>
+      <DisasterSimulation
+        countryId={d.countryId}
+        wallId={d.wallId}
+        roofId={d.roofId}
+        foundationId={d.foundationId}
+        featureIds={d.featureIds}
+        buildingTypeId={d.buildingTypeId}
+        disasterType={disasterType}
+        factorScores={results?.factorScores}
+        overallScore={results?.overallScore ?? 50}
+        simPhase={simPhase}
+        phaseProgress={phaseProgress}
+        country={country}
+      />
     );
   }
 
-  const country = countries.find(c => c.id === d.countryId);
+  // ─── RESULTS PHASE ───
   const building = buildingTypes.find(b => b.id === d.buildingTypeId);
   const wall = wallMaterials.find(m => m.id === d.wallId);
   const roof = roofMaterials.find(m => m.id === d.roofId);
   const foundation = foundationMaterials.find(m => m.id === d.foundationId);
   const rating = getRating(results.overallScore);
   const orderedFactors = [Factor.HEAT, Factor.COLD_SNOW, Factor.WIND, Factor.QUAKE, Factor.WATER, Factor.SUSTAINABILITY, Factor.COST];
+  const survived = results.overallScore >= 70;
+  const budgetPct = results.budget > 0 ? (results.totalCost / results.budget * 100).toFixed(0) : '0';
 
   const handleSave = () => {
     const design = { id: Date.now().toString(), name: `${building?.nameEn} - ${country?.nameEn}`, timestamp: Date.now(), ...d, results };
     dispatch({ type: 'SAVE_DESIGN', payload: design });
     setSaved(true);
   };
-
   const handleRedesign = () => { dispatch({ type: 'INCREMENT_ATTEMPT' }); navigate('/design'); };
-  const handleNew = () => { if (confirm('Start new design?')) { dispatch({ type: 'RESET_DESIGN' }); navigate('/'); }};
-
-  const budgetPct = results.budget > 0 ? (results.totalCost / results.budget * 100).toFixed(0) : '0';
+  const handleNew = () => { if (confirm('Start new design?')) { dispatch({ type: 'RESET_DESIGN' }); navigate('/'); } };
 
   return (
     <div className="results-page">
-      <div className="build-view">
+      {/* CONFETTI */}
+      {confetti.length > 0 && <div className="confetti-container">
+        {confetti.map(p => (
+          <div key={p.id} className="confetti-piece" style={{
+            left: `${p.x}%`,
+            animationDelay: `${p.delay}s`,
+            animationDuration: `${p.duration}s`,
+            backgroundColor: p.color,
+            width: `${p.size}px`,
+            height: `${p.size}px`,
+            transform: `rotate(${p.rotation}deg)`,
+          }} />
+        ))}
+      </div>}
+
+      {/* BUILDING VIEW */}
+      <div className={`build-view ${revealStep >= 1 ? 'reveal-in' : ''}`}>
         <h3>🏗️ Your Building</h3>
         <BuildingCanvas wallId={d.wallId} roofId={d.roofId} foundationId={d.foundationId} featureIds={d.featureIds} buildingTypeId={d.buildingTypeId} countryId={d.countryId} size="large" />
         <div className="build-info">
@@ -251,29 +232,46 @@ export default function Results() {
         </div>
       </div>
 
-      <div className="score-section">
-        <div className="score-card" style={{ borderColor: rating.color }}>
-          <div className="score-big" style={{ color: rating.color }}>{results.overallScore}</div>
-          <div className="score-label" style={{ color: rating.color }}>{rating.label}</div>
-          <div className="score-stars">{'★'.repeat(rating.stars)}{'☆'.repeat(5 - rating.stars)}</div>
+      {/* SCORE SECTION */}
+      <div className={`score-section ${revealStep >= 2 ? 'reveal-in' : ''}`}>
+        {/* VERDICT BANNER */}
+        <div className={`verdict-banner ${survived ? 'verdict-survived' : 'verdict-failed'}`}>
+          <div className="verdict-icon">{survived ? '🏠✨' : '🏚️💥'}</div>
+          <div className="verdict-text">{survived ? 'BUILDING SURVIVED!' : 'BUILDING COLLAPSED!'}</div>
+          <div className="verdict-sub">{survived ? 'Your design withstood the disaster!' : 'Your design could not survive the disaster.'}</div>
         </div>
 
-        <div className="details-list">
+        {/* SCORE CARD */}
+        <div className="score-card" style={{ borderColor: rating.color }}>
+          <div className="score-emoji">{rating.icon}</div>
+          <div className="score-big" style={{ color: rating.color }}>{displayScore}</div>
+          <div className="score-label" style={{ color: rating.color }}>{rating.label}</div>
+          <div className="score-stars">{'★'.repeat(rating.stars)}{'☆'.repeat(5 - rating.stars)}</div>
+          {results.overallScore >= 90 && <div className="score-sparkle">✨ Perfect Design! ✨</div>}
+          {results.overallScore >= 50 && results.overallScore < 90 && <div className="score-encouragement">Good effort! Try improving weak areas.</div>}
+          {results.overallScore < 50 && <div className="score-encouragement score-encourage-low">Don't give up! Every redesign makes you stronger.</div>}
+        </div>
+
+        {/* DETAILS */}
+        <div className={`details-list ${revealStep >= 2 ? 'reveal-in' : ''}`}>
           <div className="detail-row"><span>🌍 Country:</span><span>{country?.flagEmoji} {country?.nameEn}</span></div>
           <div className="detail-row"><span>🏢 Building:</span><span>{building?.icon} {building?.nameEn}</span></div>
           <div className="detail-row"><span>💰 Budget:</span><span>{results.totalCost.toLocaleString()} / {results.budget.toLocaleString()} SAR ({budgetPct}%)</span></div>
         </div>
 
+        {/* FACTOR BARS */}
         <h3 className="factor-title">📊 Factor Resilience Scores</h3>
         <div className="factors-list">
-          {orderedFactors.map(factor => {
+          {orderedFactors.map((factor, i) => {
             const score = results.factorScores[factor] ?? 0;
             const r = getRating(score);
             return (
-              <div key={factor} className="factor-row">
+              <div key={factor} className="factor-row" style={{ opacity: i < factorVisible ? 1 : 0, transform: i < factorVisible ? 'translateX(0)' : 'translateX(-20px)', transition: 'all 0.4s ease' }}>
                 <span className="factor-name">{FactorLabels[factor] || factor}</span>
-                <div className="factor-bar-box"><div className="factor-bar-fill" style={{ width: `${score}%`, background: r.color }}></div></div>
-                <span className="factor-num" style={{ color: r.color }}>{score}</span>
+                <div className="factor-bar-box">
+                  <div className="factor-bar-fill" style={{ width: i < factorVisible ? `${score}%` : '0%', background: r.color }}></div>
+                </div>
+                <span className="factor-num" style={{ color: r.color }}>{i < factorVisible ? score : ''}</span>
               </div>
             );
           })}

@@ -116,6 +116,12 @@ export default function FeaturesSelect() {
                     {hasConflict && (
                       <div className="conflict-warning">⚠️ Conflicts with another selection</div>
                     )}
+                    {isSelected && feat.id === 'feat_large_windows' && selectedIds.includes('feat_small_windows') && (
+                      <div className="synergy-bonus">✨ Mixed windows: balanced light & insulation</div>
+                    )}
+                    {isSelected && feat.id === 'feat_small_windows' && selectedIds.includes('feat_large_windows') && (
+                      <div className="synergy-bonus">✨ Mixed windows: balanced light & insulation</div>
+                    )}
                     {isSelected && (
                       <div className="selected-check">✓ Selected</div>
                     )}

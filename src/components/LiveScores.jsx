@@ -1,12 +1,10 @@
+import { memo } from 'react';
 import { FactorLabels, getRating } from '../data/constants';
 import { calculateResults } from '../data/scoring';
 import { countries } from '../data/countries';
-import { buildingTypes } from '../data/buildingTypes';
-import { wallMaterials, roofMaterials, foundationMaterials } from '../data/materials';
-import { features } from '../data/features';
 import './LiveScores.css';
 
-export default function LiveScores({ countryId, buildingTypeId, season, wallId, roofId, foundationId, featureIds }) {
+const LiveScores = memo(function LiveScores({ countryId, buildingTypeId, season, wallId, roofId, foundationId, featureIds }) {
   if (!countryId || !buildingTypeId || !wallId || !roofId || !foundationId) {
     return (
       <div className="live-scores">
@@ -101,4 +99,6 @@ export default function LiveScores({ countryId, buildingTypeId, season, wallId, 
       )}
     </div>
   );
-}
+});
+
+export default LiveScores;

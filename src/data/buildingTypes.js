@@ -4,7 +4,6 @@ export const buildingTypes = [
   {
     id: 'house',
     nameEn: 'House',
-    nameAr: 'House',
     icon: '🏠',
     description: 'Residential family home - medium budget',
     budget: 300000,
@@ -23,7 +22,6 @@ export const buildingTypes = [
   {
     id: 'school',
     nameEn: 'School',
-    nameAr: 'School',
     icon: '🏫',
     description: 'Educational facility for 200 students - requires fire safety',
     budget: 800000,
@@ -44,7 +42,6 @@ export const buildingTypes = [
   {
     id: 'hospital',
     nameEn: 'Hospital',
-    nameAr: 'Hospital',
     icon: '🏥',
     description: 'Medical facility must operate during disasters - requires high earthquake resistance',
     budget: 1500000,
@@ -66,7 +63,6 @@ export const buildingTypes = [
   {
     id: 'emergency_shelter',
     nameEn: 'Emergency Shelter',
-    nameAr: 'Emergency Shelter',
     icon: '⛺',
     description: 'Quick-build temporary shelter - lightweight materials only',
     budget: 150000,
@@ -87,7 +83,6 @@ export const buildingTypes = [
   {
     id: 'farm_house',
     nameEn: 'Farm House',
-    nameAr: 'Farm House',
     icon: '🌾',
     description: 'Farmhouse needing water collection and large roof',
     budget: 250000,
@@ -108,7 +103,6 @@ export const buildingTypes = [
   {
     id: 'office_building',
     nameEn: 'Office Building',
-    nameAr: 'Office Building',
     icon: '🏢',
     description: '5-story commercial building - requires fire and earthquake safety',
     budget: 1200000,

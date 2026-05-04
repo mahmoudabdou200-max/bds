@@ -1,0 +1,503 @@
+/* === Professional Cinematic Disaster Simulation Styles === */
+
+.disaster-sim-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  position: relative;
+  animation: simFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sim-building-area {
+  position: relative;
+  min-height: 450px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(180deg, #e3f2fd 0%, #bbdefb 50%, #90caf9 100%);
+  box-shadow:
+    0 10px 40px rgba(0, 0, 0, 0.2),
+    0 0 80px rgba(0, 0, 0, 0.1) inset;
+  padding: 24px;
+  width: 100%;
+  max-width: 520px;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sim-building-area-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Cinematic Vignette Effect */
+.sim-building-area::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.3) 100%);
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.sim-building-area.cinematic::before {
+  opacity: 1;
+}
+
+/* Camera Shake - Professional */
+.shake-safe {
+  animation: cameraShake 0.5s ease-in-out infinite;
+  animation-timing-function: cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+.shake-minor {
+  animation: cameraShake 0.3s ease-in-out infinite;
+  animation-timing-function: cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+.shake-moderate {
+  animation: cameraShake 0.18s ease-in-out infinite;
+  animation-timing-function: cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+.shake-severe {
+  animation: cameraShake 0.1s ease-in-out infinite;
+  animation-timing-function: cubic-bezier(0.36, 0.07, 0.19, 0.97);
+}
+
+@keyframes cameraShake {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  10% { transform: translate(-1px, 0.5px) rotate(-0.1deg); }
+  20% { transform: translate(1px, -1px) rotate(0.1deg); }
+  30% { transform: translate(-1.5px, 1px) rotate(0deg); }
+  40% { transform: translate(1.5px, -0.5px) rotate(0.1deg); }
+  50% { transform: translate(-1px, 1px) rotate(-0.1deg); }
+  60% { transform: translate(1px, -1.5px) rotate(0deg); }
+  70% { transform: translate(-1.5px, 0.5px) rotate(0.1deg); }
+  80% { transform: translate(1px, 1px) rotate(-0.1deg); }
+  90% { transform: translate(-0.5px, -1px) rotate(0deg); }
+}
+
+/* Enhanced Building Canvas */
+.building-canvas {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.building-canvas.shake-severe {
+  filter: blur(0.5px) brightness(0.95);
+}
+
+/* Stick Figure Professional Animations */
+.stick-figure.stick-panic {
+  animation: stickPanicPro 0.25s ease-in-out infinite;
+}
+.stick-figure.stick-cautious {
+  animation: stickSwayPro 2s ease-in-out infinite;
+}
+.stick-figure.stick-shiver {
+  animation: stickShiverPro 0.15s ease-in-out infinite;
+}
+.stick-figure.stick-sway {
+  animation: stickSwayPro 2.5s ease-in-out infinite;
+}
+.stick-figure.stick-cheer {
+  animation: stickCheerPro 0.8s ease-in-out infinite;
+}
+
+@keyframes stickPanicPro {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(3px, -2px) rotate(5deg); }
+  50% { transform: translate(-3px, 2px) rotate(-5deg); }
+  75% { transform: translate(2px, -3px) rotate(3deg); }
+}
+
+@keyframes stickSwayPro {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  25% { transform: translateX(4px) rotate(2deg); }
+  75% { transform: translateX(-4px) rotate(-2deg); }
+}
+
+@keyframes stickShiverPro {
+  0%, 100% { transform: translate(0, 0); }
+  25% { transform: translate(1.5px, -1.5px); }
+  75% { transform: translate(-1.5px, 1.5px); }
+}
+
+@keyframes stickCheerPro {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.05); }
+}
+
+/* ===== Disaster Overlay Enhancements ===== */
+.disaster-overlay-svg {
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: drop-shadow(0 0 10px rgba(0,0,0,0.2));
+}
+
+.damage-overlay-svg {
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Crack Drawing Animation - Enhanced */
+@keyframes crackDraw {
+  from { stroke-dashoffset: 500; }
+  to { stroke-dashoffset: 0; }
+}
+
+.crack-path {
+  stroke-dasharray: 500;
+  animation: crackDraw 1.5s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+/* Water Effects */
+@keyframes waterStainRise {
+  from { transform: translateY(30px); opacity: 0; filter: blur(5px); }
+  to { transform: translateY(0); opacity: 0.6; filter: blur(0); }
+}
+
+@keyframes waterRipple {
+  0% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* Ice Effects */
+@keyframes icicleGrow {
+  from { transform: scaleY(0); transform-origin: top; }
+  to { transform: scaleY(1); transform-origin: top; }
+}
+
+@keyframes frostSpread {
+  from { opacity: 0; filter: blur(3px); }
+  to { opacity: 0.7; filter: blur(0); }
+}
+
+/* Fire Effects */
+@keyframes scorchAppear {
+  from { opacity: 0; transform: scale(0.8); filter: blur(2px); }
+  to { opacity: 0.6; transform: scale(1); filter: blur(0); }
+}
+
+@keyframes emberFloat {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+  50% { transform: translate(20px, -50px) scale(1.2); opacity: 0.6; }
+  100% { transform: translate(-10px, -100px) scale(0.8); opacity: 0; }
+}
+
+/* Dust and Smoke */
+@keyframes dustCloud {
+  0% { transform: translateX(0) scale(1); opacity: 0.3; }
+  50% { transform: translateX(30px) scale(1.3); opacity: 0.2; }
+  100% { transform: translateX(-20px) scale(0.8); opacity: 0; }
+}
+
+/* Simulation Phase Transitions */
+@keyframes simFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    filter: blur(0);
+  }
+}
+
+/* Cinematic Bars */
+.cinematic-bars::before,
+.cinematic-bars::after {
+  content: '';
+  position: fixed;
+  left: 0; right: 0;
+  height: 8vh;
+  background: #000;
+  z-index: 9999;
+  animation: barReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.cinematic-bars::before { top: 0; }
+.cinematic-bars::after { bottom: 0; }
+
+@keyframes barReveal {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+.cinematic-bars::after {
+  animation-name: barRevealBottom;
+}
+
+@keyframes barRevealBottom {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* HUD Animations */
+.disaster-simulation .disaster-message {
+  animation: messagePulsePro 2s ease-in-out infinite;
+}
+
+@keyframes messagePulsePro {
+  0%, 100% { transform: scale(1); filter: brightness(1); }
+  50% { transform: scale(1.02); filter: brightness(1.1); }
+}
+
+.intensity-fill {
+  animation: intensityPulsePro 2s ease-in-out infinite;
+}
+
+@keyframes intensityPulsePro {
+  0%, 100% { opacity: 1; transform: scaleY(1); }
+  50% { opacity: 0.85; transform: scaleY(0.98); }
+}
+
+.prog-step.done span {
+  animation: stepBouncePro 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes stepBouncePro {
+  0% { transform: scale(0.3); opacity: 0; }
+  60% { transform: scale(1.25); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Progress bar shimmer */
+.intensity-bar {
+  position: relative;
+  overflow: hidden;
+}
+
+.intensity-bar::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%; bottom: 0; width: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  to { left: 100%; }
+}
+
+/* Color Grading Overlay for Different Disasters */
+.color-grade-earthquake {
+  background: rgba(121, 85, 72, 0.1);
+  mix-blend-mode: multiply;
+}
+
+.color-grade-flood {
+  background: rgba(66, 165, 245, 0.15);
+  mix-blend-mode: color-dodge;
+}
+
+.color-grade-heat {
+  background: rgba(255, 171, 0, 0.1);
+  mix-blend-mode: screen;
+}
+
+.color-grade-sandstorm {
+  background: rgba(212, 165, 116, 0.2);
+  mix-blend-mode: multiply;
+}
+
+.color-grade-blizzard {
+  background: rgba(176, 190, 197, 0.15);
+  mix-blend-mode: screen;
+}
+
+.color-grade-typhoon {
+  background: rgba(84, 110, 122, 0.2);
+  mix-blend-mode: multiply;
+}
+
+.color-grade-bushfire {
+  background: rgba(255, 111, 0, 0.15);
+  mix-blend-mode: screen;
+}
+
+.color-grade-tsunami {
+  background: rgba(21, 101, 192, 0.2);
+  mix-blend-mode: color-dodge;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .shake-safe, .shake-minor, .shake-moderate, .shake-severe,
+  .stick-figure.stick-panic, .stick-figure.stick-cautious,
+  .stick-figure.stick-shiver, .stick-figure.stick-sway,
+  .stick-figure.stick-cheer, .disaster-sim-wrapper,
+  .disaster-simulation .disaster-message, .intensity-fill {
+    animation: none !important;
+  }
+
+  .damage-overlay-svg svg *,
+  .disaster-overlay-svg svg * {
+    animation: none !important;
+  }
+
+  .sim-building-area {
+    transition: none;
+  }
+
+  .cinematic-bars::before,
+  .cinematic-bars::after {
+    animation: none;
+  }
+}
+
+/* Bottom HUD Bar */
+.hud-bottom-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 16px;
+  font-size: 11px;
+  color: rgba(255,255,255,0.7);
+  font-family: 'Courier New', monospace;
+  letter-spacing: 1px;
+}
+
+.hud-fps, .hud-quality, .hud-timestamp {
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+/* Top HUD Bar */
+.hud-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  margin-bottom: 12px;
+  background: rgba(0,0,0,0.3);
+  border-radius: 8px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: white;
+}
+
+.hud-left, .hud-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hud-icon {
+  font-size: 18px;
+}
+
+.hud-disaster-name {
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+.hud-magnitude {
+  background: rgba(255,0,0,0.8);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.hud-location {
+  opacity: 0.9;
+}
+
+.hud-rec {
+  color: #FF0000;
+  animation: recBlink 1s infinite;
+  font-weight: 700;
+}
+
+@keyframes recBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Message with Icon */
+.disaster-message {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  animation: messagePulsePro 2s ease-in-out infinite;
+  margin-bottom: 16px;
+}
+
+.msg-icon {
+  font-size: 24px;
+}
+
+.msg-text {
+  letter-spacing: 2px;
+}
+
+/* Intensity Value */
+.intensity-value {
+  text-align: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+  margin-top: 4px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  font-family: 'Courier New', monospace;
+}
+
+/* Slow Motion Effect */
+.slow-motion * {
+  animation-duration: 3s !important;
+  transition-duration: 1.5s !important;
+}
+
+/* Cinematic Indicator */
+.cinematic-indicator {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.7);
+  color: #FFD700;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  border-radius: 4px;
+  animation: indicatorFade 0.5s ease-out;
+}
+
+.cinematic-dot {
+  width: 8px;
+  height: 8px;
+  background: #FF0000;
+  border-radius: 50%;
+  animation: dotPulse 1s infinite;
+}
+
+@keyframes indicatorFade {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* Phase Flash */
+@keyframes flashFade {
+  0% { opacity: 0.5; }
+  100% { opacity: 0; }
+}
+
+/* Color Grade Overlay */
+.color-grade-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 5;
+}

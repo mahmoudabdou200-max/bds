@@ -6,7 +6,6 @@ import { buildingTypes } from '../data/buildingTypes';
 import { wallMaterials, roofMaterials, foundationMaterials } from '../data/materials';
 import { features as allFeatures } from '../data/features';
 import BuildingCanvas from '../components/BuildingCanvas';
-import LiveScores from '../components/LiveScores';
 import './DesignWorkshop.css';
 
 export default function DesignWorkshop() {
@@ -19,7 +18,6 @@ export default function DesignWorkshop() {
   const wall = wallMaterials.find(m => m.id === d.wallId);
   const roof = roofMaterials.find(m => m.id === d.roofId);
   const foundation = foundationMaterials.find(m => m.id === d.foundationId);
-  const selectedFeatures = allFeatures.filter(f => d.featureIds.includes(f.id));
 
   const budget = building?.budget || 0;
   let totalCost = 0;
@@ -44,7 +42,7 @@ export default function DesignWorkshop() {
   const toggleFeature = (featId) => {
     const feature = allFeatures.find(f => f.id === featId);
     if (!feature) return;
-    
+
     if (d.featureIds.includes(featId)) {
       dispatch({ type: 'REMOVE_FEATURE', payload: featId });
     } else {
@@ -97,7 +95,7 @@ export default function DesignWorkshop() {
             countryId={d.countryId}
             size="large"
           />
-          
+
           <div className="material-chips">
             <button className={`chip ${wall ? 'active' : ''}`} onClick={() => setActiveTab('walls')}>
               {wall ? wall.icon : '🧱'} {wall?.nameEn || 'Wall'}
@@ -113,25 +111,15 @@ export default function DesignWorkshop() {
           <div className="budget-info">
             <span>💰 {totalCost.toLocaleString()} / {budget.toLocaleString()} SAR ({budgetPct.toFixed(0)}%)</span>
             <div className="budget-bar">
-              <div className="budget-fill" style={{ 
-                width: `${Math.min(budgetPct, 100)}%`, 
-                background: budgetPct > 100 ? '#F44336' : budgetPct > 80 ? '#FF9800' : '#4CAF50' 
+              <div className="budget-fill" style={{
+                width: `${Math.min(budgetPct, 100)}%`,
+                background: budgetPct > 100 ? '#F44336' : budgetPct > 80 ? '#FF9800' : '#4CAF50'
               }}></div>
             </div>
             {remainingBudget > 0 && (
               <span className="remaining">Available: {remainingBudget.toLocaleString()} SAR</span>
             )}
           </div>
-
-          <LiveScores
-            countryId={d.countryId}
-            buildingTypeId={d.buildingTypeId}
-            season={d.season}
-            wallId={d.wallId}
-            roofId={d.roofId}
-            foundationId={d.foundationId}
-            featureIds={d.featureIds}
-          />
         </div>
 
         <div className="workshop-palette">

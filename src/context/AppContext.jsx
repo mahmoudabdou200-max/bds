@@ -1,6 +1,4 @@
 import { createContext, useContext, useReducer, useEffect } from 'react';
-import { countries } from '../data/countries';
-import { buildingTypes } from '../data/buildingTypes';
 
 const AppContext = createContext(null);
 
@@ -151,12 +149,17 @@ function loadDesigns() {
 
 export function AppProvider({ children }) {
   const savedProfile = loadProfile();
-  const [state, dispatch] = useReducer(reducer, {
-    profile: savedProfile ? { ...initialProfile, ...savedProfile } : { ...initialProfile },
-    design: { ...initialDesign, startTime: Date.now() },
-    results: null,
-    savedDesigns: loadDesigns(),
-  });
+
+  function initState() {
+    return {
+      profile: savedProfile ? { ...initialProfile, ...savedProfile } : { ...initialProfile },
+      design: { ...initialDesign, startTime: Date.now() },
+      results: null,
+      savedDesigns: loadDesigns(),
+    };
+  }
+
+  const [state, dispatch] = useReducer(reducer, undefined, initState);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state.profile));

@@ -5,8 +5,7 @@ export const wallMaterials = [
     id: 'wall_concrete',
     category: 'wall',
     nameEn: 'Concrete',
-    nameAr: 'Concrete',
-    icon: '🧱',
+        icon: '🧱',
     description: 'Strong and versatile, but high carbon footprint',
     cost: 45000,
     properties: {
@@ -23,8 +22,7 @@ export const wallMaterials = [
     id: 'wall_brick',
     category: 'wall',
     nameEn: 'Brick',
-    nameAr: 'Brick',
-    icon: '🏠',
+        icon: '🏠',
     description: 'Traditional and balanced performance',
     cost: 30000,
     properties: {
@@ -41,8 +39,7 @@ export const wallMaterials = [
     id: 'wall_wood',
     category: 'wall',
     nameEn: 'Wood',
-    nameAr: 'Wood',
-    icon: '🪵',
+        icon: '🪵',
     description: 'Flexible in earthquakes but rots in water',
     cost: 25000,
     properties: {
@@ -59,8 +56,7 @@ export const wallMaterials = [
     id: 'wall_steel',
     category: 'wall',
     nameEn: 'Steel Panels',
-    nameAr: 'Steel Panels',
-    icon: '🔩',
+        icon: '🔩',
     description: 'Excellent wind resistance, expensive',
     cost: 55000,
     properties: {
@@ -77,8 +73,7 @@ export const wallMaterials = [
     id: 'wall_recycled',
     category: 'wall',
     nameEn: 'Recycled Plastic Blocks',
-    nameAr: 'Recycled Plastic Blocks',
-    icon: '♻️',
+        icon: '♻️',
     description: 'Eco-friendly, excellent for water, economical',
     cost: 15000,
     properties: {
@@ -98,8 +93,7 @@ export const roofMaterials = [
     id: 'roof_metal',
     category: 'roof',
     nameEn: 'Metal Roof',
-    nameAr: 'Metal Roof',
-    icon: '🔺',
+        icon: '🔺',
     description: 'Lightweight, withstands rain and wind',
     cost: 35000,
     properties: {
@@ -114,8 +108,7 @@ export const roofMaterials = [
     id: 'roof_tiled',
     category: 'roof',
     nameEn: 'Tiled Sloped Roof',
-    nameAr: 'Tiled Sloped Roof',
-    icon: '🏘️',
+        icon: '🏘️',
     description: 'Balanced, drains rain and snow well',
     cost: 25000,
     properties: {
@@ -130,8 +123,7 @@ export const roofMaterials = [
     id: 'roof_flat_concrete',
     category: 'roof',
     nameEn: 'Flat Concrete Roof',
-    nameAr: 'Flat Concrete Roof',
-    icon: '⬛',
+        icon: '⬛',
     description: 'Excellent for heat, weak for rain and snow',
     cost: 50000,
     properties: {
@@ -146,8 +138,7 @@ export const roofMaterials = [
     id: 'roof_solar',
     category: 'roof',
     nameEn: 'Solar Roof',
-    nameAr: 'Solar Roof',
-    icon: '☀️',
+        icon: '☀️',
     description: 'Best heat resistance and sustainability, weak in wind',
     cost: 75000,
     properties: {
@@ -165,8 +156,7 @@ export const foundationMaterials = [
     id: 'found_deep_concrete',
     category: 'foundation',
     nameEn: 'Deep Concrete Foundation',
-    nameAr: 'Deep Concrete Foundation',
-    icon: '🏗️',
+        icon: '🏗️',
     description: 'Most stable, weak in floods',
     cost: 60000,
     properties: {
@@ -180,8 +170,7 @@ export const foundationMaterials = [
     id: 'found_elevated',
     category: 'foundation',
     nameEn: 'Elevated Platform',
-    nameAr: 'Elevated Platform',
-    icon: '⬆️',
+        icon: '⬆️',
     description: 'Best flood protection, medium stability',
     cost: 40000,
     properties: {
@@ -195,8 +184,7 @@ export const foundationMaterials = [
     id: 'found_standard',
     category: 'foundation',
     nameEn: 'Standard Foundation',
-    nameAr: 'Standard Foundation',
-    icon: '▬',
+        icon: '▬',
     description: 'Economical but weak in floods and earthquakes',
     cost: 20000,
     properties: {

@@ -1,3 +1,5 @@
+import { getRating } from '../data/constants';
+
 export default function StarRating({ count, max = 5, size = 'medium' }) {
   const fullStars = Math.min(count, max);
   const emptyStars = max - fullStars;
@@ -10,9 +12,9 @@ export default function StarRating({ count, max = 5, size = 'medium' }) {
   );
 }
 
-export function ScoreBar({ score, label, factor }) {
+export function ScoreBar({ score, label }) {
   const rating = getRating(score);
-  
+
   return (
     <div className="score-bar-container">
       <div className="score-bar-header">
@@ -27,14 +29,6 @@ export function ScoreBar({ score, label, factor }) {
       </div>
     </div>
   );
-}
-
-function getRating(score) {
-  if (score >= 90) return { color: '#4CAF50', label: 'Excellent' };
-  if (score >= 70) return { color: '#8BC34A', label: 'Good' };
-  if (score >= 50) return { color: '#FFC107', label: 'Acceptable' };
-  if (score >= 30) return { color: '#FF9800', label: 'Weak' };
-  return { color: '#F44336', label: 'Failed' };
 }
 
 export function OverallScoreCircle({ score }) {

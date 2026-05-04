@@ -9,7 +9,6 @@ export default function BuildingTypeSelect() {
 
   const handleSelect = (typeId) => {
     dispatch({ type: 'SET_BUILDING_TYPE', payload: typeId });
-    navigate('/design/walls');
   };
 
   return (
@@ -51,12 +50,20 @@ export default function BuildingTypeSelect() {
       </div>
 
       {state.design.buildingTypeId && (
-        <div className="action-bar">
-          <button className="next-btn" onClick={() => navigate('/design/walls')}>
-            Next: Wall Materials →
-          </button>
-        </div>
-      )}
+          <div className="action-bar">
+            <button className="next-btn" onClick={() => navigate('/design/walls')}>
+              Next: Wall Materials →
+            </button>
+          </div>
+        )}
+        {!state.design.buildingTypeId && (
+          <div className="action-bar">
+            <button className="next-btn" disabled>
+              Next: Wall Materials →
+            </button>
+            <p className="required-hint">⚠️ Please select a building type to continue</p>
+          </div>
+        )}
     </div>
   );
 }
