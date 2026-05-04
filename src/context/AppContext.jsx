@@ -4,6 +4,7 @@ const AppContext = createContext(null);
 
 const STORAGE_KEY = 'bds_profile';
 const DESIGNS_KEY = 'bds_designs';
+const THEME_KEY = 'bds_theme';
 
 const initialProfile = {
   id: crypto.randomUUID?.() || Date.now().toString(),
@@ -126,6 +127,8 @@ function reducer(state, action) {
       return { ...state, savedDesigns: [...state.savedDesigns, action.payload] };
     case 'DELETE_DESIGN':
       return { ...state, savedDesigns: state.savedDesigns.filter(d => d.id !== action.payload) };
+    case 'SET_THEME':
+      return { ...state, theme: action.payload };
     default:
       return state;
   }
@@ -151,11 +154,13 @@ export function AppProvider({ children }) {
   const savedProfile = loadProfile();
 
   function initState() {
+    const savedTheme = (() => { try { return localStorage.getItem(THEME_KEY) || 'light'; } catch { return 'light'; } })();
     return {
       profile: savedProfile ? { ...initialProfile, ...savedProfile } : { ...initialProfile },
       design: { ...initialDesign, startTime: Date.now() },
       results: null,
       savedDesigns: loadDesigns(),
+      theme: savedTheme,
     };
   }
 
@@ -168,6 +173,11 @@ export function AppProvider({ children }) {
   useEffect(() => {
     localStorage.setItem(DESIGNS_KEY, JSON.stringify(state.savedDesigns));
   }, [state.savedDesigns]);
+
+  useEffect(() => {
+    localStorage.setItem(THEME_KEY, state.theme);
+    document.documentElement.setAttribute('data-theme', state.theme);
+  }, [state.theme]);
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>

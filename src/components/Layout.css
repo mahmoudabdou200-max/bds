@@ -1,13 +1,35 @@
+.theme-toggle {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  margin-left: 8px;
+}
+
+.theme-toggle:hover {
+  background: rgba(255,255,255,0.35);
+  transform: scale(1.1);
+}
+
 .app-layout {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #f5f5f5;
+  background: var(--bg);
+  color: var(--text);
   font-family: 'Inter', 'Segoe UI', Tahoma, Arial, sans-serif;
+  transition: background 0.3s, color 0.3s;
 }
 
 .app-header {
-  background: linear-gradient(135deg, #1976D2, #1565C0);
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
   color: white;
   padding: 12px 24px;
   display: flex;
@@ -39,14 +61,15 @@
 }
 
 .breadcrumb-bar {
-  background: white;
+  background: var(--card-bg);
   padding: 10px 24px;
   display: flex;
   align-items: center;
   gap: 8px;
   overflow-x: auto;
-  border-bottom: 2px solid #E3F2FD;
+  border-bottom: 2px solid var(--border);
   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  transition: background 0.3s, border-color 0.3s;
 }
 
 .breadcrumb-item {
@@ -59,18 +82,23 @@
   font-size: 0.85rem;
   white-space: nowrap;
   transition: all 0.2s;
-  background: #f0f0f0;
-  color: #666;
+  background: var(--chip-bg);
+  color: var(--text-secondary);
 }
 
 .breadcrumb-item.active {
-  background: #1976D2;
+  background: var(--primary);
   color: white;
 }
 
 .breadcrumb-item.completed {
   background: #E8F5E9;
   color: #388E3C;
+}
+
+[data-theme="dark"] .breadcrumb-item.completed {
+  background: #1B5E20;
+  color: #A5D6A7;
 }
 
 .breadcrumb-item.disabled {
@@ -96,8 +124,8 @@
 
 .budget-display {
   margin-right: auto;
-  background: #E3F2FD;
-  color: #1565C0;
+  background: rgba(255,255,255,0.15);
+  color: white;
   padding: 6px 16px;
   border-radius: 20px;
   font-size: 0.9rem;
@@ -115,11 +143,12 @@
 }
 
 .app-footer {
-  background: #263238;
-  color: rgba(255,255,255,0.6);
+  background: var(--footer-bg);
+  color: var(--footer-color);
   text-align: center;
   padding: 16px;
   font-size: 0.85rem;
+  transition: background 0.3s, color 0.3s;
 }
 
 @media (max-width: 768px) {

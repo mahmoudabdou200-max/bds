@@ -19,7 +19,8 @@ const steps = [
 export default function Layout({ children }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const { state } = useApp();
+  const { state, dispatch } = useApp();
+  const isDark = state.theme === 'dark';
   const isDesignFlow = location.pathname.startsWith('/design') || location.pathname === '/results';
   const currentStepIndex = steps.findIndex(s => location.pathname.startsWith(s.path));
 
@@ -46,13 +47,21 @@ export default function Layout({ children }) {
   }
 
   return (
-    <div className="app-layout">
+    <div className="app-layout" data-theme={state.theme}>
       <header className="app-header">
-        <Link to="/" className="app-logo">Building Design Simulator</Link>
+        <Link to="/" className="app-logo">🏗️ Building Design Simulator</Link>
         <nav className="header-nav">
           <Link to="/saved">Projects</Link>
           <Link to="/leaderboard">Leaderboard</Link>
           <Link to="/profile">Profile</Link>
+          <button
+            className="theme-toggle"
+            onClick={() => dispatch({ type: 'SET_THEME', payload: isDark ? 'light' : 'dark' })}
+            aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            title={isDark ? 'Light mode' : 'Dark mode'}
+          >
+            {isDark ? '☀️' : '🌙'}
+          </button>
         </nav>
       </header>
 
