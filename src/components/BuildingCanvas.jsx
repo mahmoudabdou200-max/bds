@@ -144,7 +144,7 @@ const BuildingCanvasInner = memo(function BuildingCanvas({ wallId, roofId, found
         <rect x="0" y="0" width={W} height={H + 60 * s} fill="url(#skyGrad)" />
 
         {/* ===== SUN ===== */}
-        <g className="sun-group">
+        <g className="sun-glow">
           <circle cx={W * 0.87} cy={60 * s} r={32 * s} fill="#FFF9C4" opacity="0.3">
             <animate attributeName="r" values={`${32 * s};${40 * s};${32 * s}`} dur="6s" repeatCount="indefinite" />
           </circle>
@@ -167,7 +167,7 @@ const BuildingCanvasInner = memo(function BuildingCanvas({ wallId, roofId, found
 
         {/* ===== COUNTRY-SPECIFIC BACKGROUND EFFECTS ===== */}
         {countryId === 'saudi' && (
-          <g className="desert-bg">
+          <g className="desert-bg heat-waves">
             <rect x="0" y={G} width={W} height={H - G + 60 * s} fill="url(#desertGrad)" />
             {/* Sand dunes */}
             <path d={`M0,${G + 20 * s} Q${W * 0.2},${G - 15 * s} ${W * 0.4},${G + 10 * s} Q${W * 0.6},${G - 30 * s} ${W * 0.8},${G + 5 * s} Q${W * 0.9},${G - 10 * s} ${W},${G + 15 * s} L${W},${H + 60 * s} L0,${H + 60 * s} Z`} fill="#D4A574" opacity="0.6" />
@@ -356,7 +356,7 @@ const BuildingCanvasInner = memo(function BuildingCanvas({ wallId, roofId, found
                 <line x1={wx} y1={wy + winH / 2} x2={wx + winW} y2={wy + winH / 2} stroke="#546E7A" strokeWidth={0.8 * s} />
                 <rect x={wx + 2 * s} y={wy + 2 * s} width={winW - 4 * s} height={winH / 2 - 2 * s} fill="#FFF9C4" opacity="0.15" rx={1 * s} />
                 {hasShading && (
-                  <rect x={wx - 4 * s} y={wy - 10 * s} width={winW + 8 * s} height={8 * s} fill="#FF8F00" stroke="#E65100" strokeWidth={0.8 * s} rx={2 * s} opacity="0.85">
+                  <rect className="shading-awning" x={wx - 4 * s} y={wy - 10 * s} width={winW + 8 * s} height={8 * s} fill="#FF8F00" stroke="#E65100" strokeWidth={0.8 * s} rx={2 * s} opacity="0.85">
                     <animate attributeName="opacity" values="0.7;0.9;0.7" dur="4s" repeatCount="indefinite" />
                   </rect>
                 )}
@@ -426,7 +426,7 @@ const BuildingCanvasInner = memo(function BuildingCanvas({ wallId, roofId, found
 
         {/* ===== SOLAR PANELS ON ROOF ===== */}
         {hasSolar && rs.shape !== 'flat' && (
-          <g className="solar-panels">
+          <g className="solar-panel">
             <rect x={MX - 45 * s} y={WT_TOP - ROOF_H * 0.6} width={35 * s} height={18 * s} fill="#1565C0" stroke="#0D47A1" strokeWidth={1 * s} rx={1 * s} transform={`rotate(${-20 * s}, ${MX - 28 * s}, ${WT_TOP - ROOF_H * 0.5})`} opacity="0.9">
               <animate attributeName="opacity" values="0.85;1;0.85" dur="3s" repeatCount="indefinite" />
             </rect>

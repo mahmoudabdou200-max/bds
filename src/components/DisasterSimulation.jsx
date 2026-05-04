@@ -73,7 +73,7 @@ export default function DisasterSimulation({
       )}
 
       <div className={areaClass}>
-        <div className="color-grade-overlay color-grade-{disasterType}" style={{
+        <div className={`color-grade-overlay color-grade-${disasterType}`} style={{
           position: 'absolute', top:0, left:0, right:0, bottom:0,
           pointerEvents: 'none', zIndex:5,
           opacity: simPhase >= 1 && simPhase < 4 ? 0.3 + damageParams.damageIntensity * 0.2 : 0,
